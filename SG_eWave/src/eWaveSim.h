@@ -67,7 +67,9 @@ private:
 	//Generating Fake Drift Velocity
 	void initDriftVel(float *&dVel);
 
+	//Introducing Dampening of waves on the boundaries
 	float boundaryConditions(float x, float y);
+
 	//Variables used
 private:
 	float driftVelScale = 100.0f;
