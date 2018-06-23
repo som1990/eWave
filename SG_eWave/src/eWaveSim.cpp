@@ -14,6 +14,13 @@
 
 using namespace std;
 
+
+static float fclamp(float x,float minVal, float maxVal)
+{
+	x = (x<minVal) ? minVal : ((x>maxVal) ? maxVal : x);
+	return x;
+}
+
 //************************************
 // Method:    initmaps2
 // FullName:  eWaveSim::initmaps2
@@ -108,9 +115,8 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 	initmaps(m_ambWaveSource, size, 0.0);
 	initmaps(m_ambientWaves, size, 0.0);
 	initmaps(m_height, size, 0.0);
-	//initmaps2(res_height, size, 0.0);
-	initmaps(vel_potential, size, 0.0);
 
+	initmaps(vel_potential, size, 0.0);
 
 }
 
@@ -371,6 +377,39 @@ void eWaveSim::convert_c2r(fftwf_complex *&c, float *&r)
 		}
 	}
 }
+
+float eWaveSim::boundaryConditions(float x, float y)
+{
+	float x0 = x; float x1 = simGridX - x;
+	float y0 = y; float y1 = simGridY - y;
+
+	float leftBound, rightBound, topBound, bottomBound;
+	leftBound = rightBound = topBound = bottomBound = 1.0;
+
+	//10% of GridSize
+	float hori_Padding = .1f * simGridX;
+	float vert_Padding = .1f * simGridY;
+	
+	if (x0 < 0.0f)
+		leftBound = 0;
+	else
+		leftBound = fclamp(pow(x0/hori_Padding,bound_alpha),0.0,1.0);
+	if (x1 < 0.0f)
+		rightBound = 0;
+	else
+		rightBound = fclamp(pow(x1 / hori_Padding, bound_alpha), 0.0, 1.0);
+	if (y0 < 0.0f)
+		bottomBound = 0;
+	else
+		bottomBound = fclamp(pow(y0 / vert_Padding, bound_alpha), 0.0, 1.0);
+	if (y1 < 0.0f)
+		topBound = 0;
+	else
+		topBound = fclamp(pow(y1 / vert_Padding, bound_alpha), 0.0, 1.0);
+
+	return topBound*bottomBound*rightBound*leftBound;
+}
+
 //---------------------------------------------------------------------------------
 //DEBUG PRINT FUNCTIONS
 void printlist(float *&m_list, int size, char* c)
