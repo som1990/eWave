@@ -97,8 +97,10 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 
 	m_height = new float[size];
 	prev_height = (float*) malloc(sizeof(float)*size);
+	obs_height = new float[size];
 	vel_potential = new float[size];
 	prev_velPotential = (float*) malloc(sizeof(float)*size);
+	obs_velPot = new float[size];
 	res_height = new float[size];
 	driftVel = new float[size*2];
 	m_ambientWaves = new float[size];
@@ -117,7 +119,8 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 	initmaps(m_ambWaveSource, size, 0.0);
 	initmaps(m_ambientWaves, size, 0.0);
 	initmaps(m_height, size, 0.0);
-	
+	initmaps(obs_height, size, 0.0);
+	initmaps(obs_velPot, size, 0.0);
 	initmaps(vel_potential, size, 0.0);
 	initDriftVel(driftVel);
 }
@@ -178,8 +181,9 @@ void eWaveSim::addingSources(float *&source_height)
 	{
 		//I was getting a subtle effect and hence multiplied it with a constant
 		float temp = source_height[i]*m_dt*2;
-		float temp2 = m_height[i];
+		float temp2 = m_height[i] + obs_height[i];
 		m_height[i] = temp2 + temp + m_ambientWaves[i] + m_ambWaveSource[i];
+		vel_potential[i] += obs_velPot[i];
 	}
 }
 
@@ -207,10 +211,12 @@ void eWaveSim::applyObstruction(float *&sourceObstruction)
 		for (int i = 0; i < simGridX; i++)
 		{
 			int index = i + j*simGridX;
-			m_height[index] *= sourceObstruction[index];
-			vel_potential[index] *= sourceObstruction[index];
+//			m_height[index] *= sourceObstruction[index];
+//			vel_potential[index] *= sourceObstruction[index];
 			//Generating ambient Waves
 			m_ambWaveSource[index] = fclamp(1.0f - sourceObstruction[index],0.0f,1.0f) * -m_ambientWaves[index];
+			obs_height[index] = fclamp(1.0f - sourceObstruction[index], 0.0f, 1.0f) * -m_height[index];
+			obs_velPot[index] = fclamp(1.0f - sourceObstruction[index], 0.0f, 1.0f) * -vel_potential[index];
 		}
 	}
 }
@@ -222,11 +228,11 @@ void eWaveSim::applyObstruction(float *&sourceObstruction)
 // Returns:   float -	returns 1.0 if inside the boundary, or a value of
 //						[0,1] within the boundary determined by a function.
 // Qualifier:
-// Parameter: float x - horizontal position on the sim Grid 
+// Parameter: float x - horizontal position on the Sim Grid 
 // Parameter: float y - vertical position on the Sim Grid
 // 
 // Description:	Dampens the periodicity of the waves by smoothing the height to zero 
-//				at the edges of the grid based on user controled function.
+//				at the edges of the grid based on user controlled function.
 //				function of padding f(d) = pow(d/d0,alpha) where f(d) falls in [0,1] range
 //					d - the distance from edge	
 //					d0 - the padding distance
@@ -608,9 +614,9 @@ void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float
 	gravity = 9.8f;
 
 	int size = simGridX*simGridY;
-
-	addingSources(source_height);
 	applyObstruction(sourceObstruction);
+	addingSources(source_height);
+	
 	convert_r2c(m_height, cH);
 	convert_r2c(vel_potential, cVel);
 

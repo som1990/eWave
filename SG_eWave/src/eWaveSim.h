@@ -94,7 +94,9 @@ private:
 	float *driftVel;
 	float *m_ambientWaves;
 	float *m_ambWaveSource;
-	
+
+	float *obs_height;
+	float *obs_velPot;
 	fftwf_complex *cPrev_height;
 	fftwf_complex *cPrev_vel;
 	fftwf_complex *cHfft, *cVelfft;
