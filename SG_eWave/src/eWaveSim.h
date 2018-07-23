@@ -40,7 +40,7 @@ public:
 
 private:
 	//Quick function to assign a value to the entire array
-	static void initmaps(float(*&map2), int size, float value);
+	static void initmaps(float(*&map2), int size, float value,int dim);
 	//Adds source_height user added to the heightfield
 	void addingSources(float *&source_height);
 	//Multiplies the height and velocityPotential with the obstructionfield

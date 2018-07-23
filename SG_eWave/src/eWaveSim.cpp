@@ -11,9 +11,24 @@
 #define IMAG 1
 #define PI 3.14159265359
 #include <iostream>
-
+#include <utility>
 using namespace std;
 
+
+void bufferSwap(fftwf_complex* &a, fftwf_complex* &b)
+{
+	fftwf_complex* temp = a;
+	a = b;
+	b = temp;
+}
+
+void bufferSwap(float* &a, float* &b)
+{
+	float* temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
 
 static float fclamp(float x,float minVal, float maxVal)
 {
@@ -33,14 +48,18 @@ static float fclamp(float x,float minVal, float maxVal)
 // Description: Quick function to populate the array with a given value.
 //************************************
 
-void eWaveSim::initmaps(float (*&map2), int size, float value)
+void eWaveSim::initmaps(float (*&map2), int size, float value,int dim)
 {
 
-#pragma omp parallel for
-	for (int i = 0; i < size; i++)
+	if (dim == 1)
 	{
-		(map2)[i] = value;
+		#pragma omp parallel for
+		for (int i = 0; i < size; i++)
+		{
+			(map2)[i] = value;
+		}
 	}
+	
 }
 
 //Constructor function
@@ -116,12 +135,12 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 
 
 	
-	initmaps(m_ambWaveSource, size, 0.0);
-	initmaps(m_ambientWaves, size, 0.0);
-	initmaps(m_height, size, 0.0);
-	initmaps(obs_height, size, 0.0);
-	initmaps(obs_velPot, size, 0.0);
-	initmaps(vel_potential, size, 0.0);
+	initmaps(m_ambWaveSource, size, 0.0,1);
+	initmaps(m_ambientWaves, size, 0.0,1);
+	initmaps(m_height, size, 0.0,1);
+	initmaps(obs_height, size, 0.0,1);
+	initmaps(obs_velPot, size, 0.0,1);
+	initmaps(vel_potential, size, 0.0,1);
 	initDriftVel(driftVel);
 }
 
@@ -624,14 +643,14 @@ void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float
 	//fft(vel_potential, vel_fft);
 	fft(cH, cHfft);
 	fft(cVel, cVelfft);
-	
-	//memcpy(previous_height, h_fft, size*sizeof(float));
-	//memcpy(prev_vel, vel_fft, size*sizeof(float));
-	
-	memcpy(cPrev_height, cHfft, size*sizeof(fftwf_complex));
-	memcpy(cPrev_vel, cVelfft, size * sizeof(fftwf_complex));
+	printlist(cHfft, size, "cHfft");
 
+	bufferSwap(cPrev_height,cHfft);
+	bufferSwap(cPrev_vel,cVelfft);
+	//memcpy(cPrev_height, cHfft, size*sizeof(fftwf_complex));
+	//memcpy(cPrev_vel, cVelfft, size * sizeof(fftwf_complex));
 
+	printlist(cPrev_height, size, "prevHeight");
 	calc_eWave(cHfft, cVelfft, cPrev_height, cPrev_vel);
 	//printlist(cHfft, size, "chfft");
 	//ifft(h_fft, m_height);
@@ -647,6 +666,8 @@ void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float
 	//printlist(cH, size,"cheight");
 	//printlist(m_height,size, "height");
 	
+	//swap(prev_height, m_height);
+	//swap(prev_velPotential, vel_potential);
 	memcpy(prev_height, m_height, sizeof(float)*size);
 	memcpy(prev_velPotential, vel_potential, sizeof(float)*size);
 

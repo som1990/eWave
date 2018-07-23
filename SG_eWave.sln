@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SG_eWave", "SG_eWave\SG_eWave.vcxproj", "{2DFED51C-61F2-416F-8D7A-5FDCAEFD7747}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoubleBufferTest", "DoubleBufferTest\DoubleBufferTest.vcxproj", "{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{2DFED51C-61F2-416F-8D7A-5FDCAEFD7747}.Release|x64.Build.0 = Release|x64
 		{2DFED51C-61F2-416F-8D7A-5FDCAEFD7747}.Release|x86.ActiveCfg = Release|Win32
 		{2DFED51C-61F2-416F-8D7A-5FDCAEFD7747}.Release|x86.Build.0 = Release|Win32
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Debug|x64.ActiveCfg = Debug|x64
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Debug|x64.Build.0 = Debug|x64
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Debug|x86.ActiveCfg = Debug|Win32
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Debug|x86.Build.0 = Debug|Win32
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Release|x64.ActiveCfg = Release|x64
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Release|x64.Build.0 = Release|x64
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Release|x86.ActiveCfg = Release|Win32
+		{23A84C10-9E90-4A8D-BC71-D9A7A1605E69}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
