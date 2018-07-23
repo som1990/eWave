@@ -130,8 +130,8 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 	cVel = (fftwf_complex*)malloc(sizeof(fftwf_complex)*size);
 	cHfft = (fftwf_complex*)malloc(sizeof(fftwf_complex)*size);
 	cVelfft = (fftwf_complex*)malloc(sizeof(fftwf_complex)*size);
-	cPrev_height = (fftwf_complex*)malloc(sizeof(fftwf_complex)*size);
-	cPrev_vel = (fftwf_complex*)malloc(sizeof(fftwf_complex)*size);
+	cPrev_height = (fftwf_complex*)calloc(size,sizeof(fftwf_complex));
+	cPrev_vel = (fftwf_complex*)calloc(size,sizeof(fftwf_complex));
 
 
 	
@@ -666,10 +666,10 @@ void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float
 	//printlist(cH, size,"cheight");
 	//printlist(m_height,size, "height");
 	
-	//swap(prev_height, m_height);
-	//swap(prev_velPotential, vel_potential);
-	memcpy(prev_height, m_height, sizeof(float)*size);
-	memcpy(prev_velPotential, vel_potential, sizeof(float)*size);
+	bufferSwap(prev_height, m_height);
+	bufferSwap(prev_velPotential, vel_potential);
+	//memcpy(prev_height, m_height, sizeof(float)*size);
+	//memcpy(prev_velPotential, vel_potential, sizeof(float)*size);
 
 	SLadvection(driftVel, m_height, prev_height, 1);
 	SLadvection(driftVel, vel_potential, prev_velPotential, 1);
