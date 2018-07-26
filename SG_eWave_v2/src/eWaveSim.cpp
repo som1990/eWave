@@ -199,7 +199,7 @@ void eWaveSim::addingSources(float *&source_height)
 	for (int i = 0; i < size; i++)
 	{
 		//I was getting a subtle effect and hence multiplied it with a constant
-		float temp = source_height[i]*m_dt*2;
+		float temp = -source_height[i]*sourceMag*m_dt*0.5;
 		float temp2 = m_height[i] + obs_height[i];
 		m_height[i] = temp2 + temp + m_ambientWaves[i] + m_ambWaveSource[i];
 		vel_potential[i] += obs_velPot[i];
@@ -238,6 +238,15 @@ void eWaveSim::applyObstruction(float *&sourceObstruction)
 			obs_velPot[index] = fclamp(1.0f - sourceObstruction[index], 0.0f, 1.0f) * -vel_potential[index];
 		}
 	}
+}
+
+void eWaveSim::calcSources()
+{
+	float tX = m_curPos[0] - m_prevPos[0];
+	float tY = m_curPos[1] - m_prevPos[1];
+
+	sourceMag = sqrtf(tX*tX + tY*tY);
+	//cout << "sourceMag: " << sourceMag << endl;
 }
 
 //************************************
@@ -393,7 +402,7 @@ void eWaveSim::calc_eWave(fftwf_complex *&h, fftwf_complex *&v, fftwf_complex *&
 		for (int i = 0; i < simGridX; i++)
 		{
 
-			//Direction 1 from Siggraph Course 2004
+			//Direction 1 from SIGGRAPH Course 2004
 			// 		float n = i - int((simGridX) / 2.0);
 			// 		float m = i - int((simGridY) / 2.0);
 			float dkx = 2 * PI / m_Lx;
@@ -403,12 +412,12 @@ void eWaveSim::calc_eWave(fftwf_complex *&h, fftwf_complex *&v, fftwf_complex *&
 			if (i <= simGridX / 2.0)
 				kx = i*dkx;
 			else
-				kx = (simGridX - i)*dkx;
+				kx = (i-simGridX )*dkx;
 
 			if (j <= simGridY / 2.0)
 				ky = j*dky;
 			else
-				ky = (simGridY - j)*dky;
+				ky = (j-simGridY)*dky;
 			//  	float m = simGridY;
 			// 		float m_kx = 2 * PI*n / simGridX;
 			// 		float m_ky = 2 * PI*m / simGridY;
@@ -600,7 +609,6 @@ void printlist(fftwf_complex *&m_list, int size, char* c)
 			//cout << c << "[i]: " << m_list[i][IMAG] << endl;
 	}
 	cout << c << "[IMAG][max]: " << f_max << endl;
-	//test
 }
 
 //---------------------------------------------------------------------------------
@@ -630,10 +638,12 @@ void printlist(fftwf_complex *&m_list, int size, char* c)
 
 void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float dt)
 {
-
-
 	this->m_dt = dt;
 	gravity = 9.8f;
+
+	calcSources();
+	m_prevPos[0] = m_curPos[0];
+	m_prevPos[1] = m_curPos[1];
 
 	int size = simGridX*simGridY;
 	applyObstruction(sourceObstruction);
@@ -680,4 +690,15 @@ void eWaveSim::propogate(float *&source_height, float *&sourceObstruction, float
 	res_height = m_height;
 }
 
+void eWaveSim::setCurPoint(float curPoint[2])
+{
+	m_curPos[0] = curPoint[0];
+	m_curPos[1] = curPoint[1];
+}
+
+void eWaveSim::setPrevPoint(float prevPoint[2])
+{
+	m_prevPos[0] = prevPoint[0];
+	m_prevPos[1] = prevPoint[1];
+}
 

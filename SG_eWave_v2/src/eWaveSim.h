@@ -26,7 +26,7 @@ public:
 	//Return functions for the main.cpp to access
 	float height(int &i, int &j);
 	float height(int &index);
-
+	
 	float ambientWaves(int i, int j);
 	float ambientWaves(int index);
 
@@ -35,32 +35,34 @@ public:
 
 	//This is the update function and goes through all the steps necessary for the program
 	void propogate(float *&source_height, float *&sourceObstruction, float dt);
-
-
+	
+	void setCurPoint(float curPoint[2]);
+	void setPrevPoint(float prevPoint[2]);
 
 private:
 	//Quick function to assign a value to the entire array
-	static void initmaps(float(*&map2), int size, float value, int dim);
-	//Adds source_height user added to the heightfield
+	static void initmaps(float(*&map2), int size, float value,int dim);
+	//Adds source_height user added to the heightField
 	void addingSources(float *&source_height);
-	//Multiplies the height and velocityPotential with the obstructionfield
+	//Multiplies the height and velocityPotential with the obstructionField
 	void applyObstruction(float *&sourceObstruction);
-
+	
+	void calcSources();
 
 	//Fast Fourier Transform functions using fftw libraries
 	//void fft(float*&in, float *&out);
 	void fft(fftwf_complex *&in, fftwf_complex *&out);
 	//void ifft(float *&in, float *&out);
 	void ifft(fftwf_complex *&in, fftwf_complex *&out);
-
+	
 	//Simulation of the heightmap based on the eWave note.
 
 	void calc_eWave(fftwf_complex *&h, fftwf_complex *&v, fftwf_complex *&oldh, fftwf_complex *&oldv);
-
+	
 	//Conversions between real and complex variables
 	void convert_r2c(float* &r, fftwf_complex *&c);
 	void convert_c2r(fftwf_complex *&c, float *&r);
-
+	
 	//advection of the components based on velocity provided
 	void SLadvection(float *&vel, float *&newField, float* &oldField, int dim);
 
@@ -72,11 +74,11 @@ private:
 
 	//Variables used
 private:
+	float m_curPos[2], m_prevPos[2];
+	float sourceMag = 0;
 	float driftVelScale = 100.0f;
 	float gravity = 9.8f;
-	float m_curPos[2] = { 0.f,0.f };
-	float m_prevPos[2] = { 0.f,0.f };
-
+	
 	//fft variables
 	float m_Lx=1.0f, m_Ly=1.0f;
 	
