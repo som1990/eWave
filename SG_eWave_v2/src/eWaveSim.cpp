@@ -172,7 +172,7 @@ float eWaveSim::height(int &index)
 void eWaveSim::initDriftVel(float *&dVel)
 {
 	int size = simGridX*simGridY*2;
-#pragma omp parallel for
+	#pragma omp parallel for
 	for (int i = 0; i < size; i = i + 2)
 	{
 		dVel[i + 0] = -1.0f * driftVelScale;
@@ -195,14 +195,22 @@ void eWaveSim::initDriftVel(float *&dVel)
 void eWaveSim::addingSources(float *&source_height)
 {
 	int size = simGridX*simGridY;
-#pragma omp parallel for
-	for (int i = 0; i < size; i++)
+
+	for (int i = 0; i < simGridX; i++)
 	{
-		//I was getting a subtle effect and hence multiplied it with a constant
-		float temp = -source_height[i]*sourceMag*m_dt*0.5;
-		float temp2 = m_height[i] + obs_height[i];
-		m_height[i] = temp2 + temp + m_ambientWaves[i] + m_ambWaveSource[i];
-		vel_potential[i] += obs_velPot[i];
+		#pragma omp parallel for
+		for (int j = 0; j < simGridY; j++)
+		{
+			int index = i + j * simGridX;
+			float bound = boundaryConditions(i, j);
+			//I was getting a subtle effect and hence multiplied it with a constant
+			float temp = -source_height[index] * sourceMag*m_dt*0.5;
+			float temp2 = m_height[index] + obs_height[index];
+			m_height[index] = temp2 + temp + m_ambientWaves[index] + m_ambWaveSource[index];
+			m_height[index] *= bound;
+			vel_potential[index] += obs_velPot[index];
+			vel_potential[index] *= bound;
+		}
 	}
 }
 
@@ -233,6 +241,7 @@ void eWaveSim::applyObstruction(float *&sourceObstruction)
 //			m_height[index] *= sourceObstruction[index];
 //			vel_potential[index] *= sourceObstruction[index];
 			//Generating ambient Waves
+			
 			m_ambWaveSource[index] = fclamp(1.0f - sourceObstruction[index],0.0f,1.0f) * -m_ambientWaves[index];
 			obs_height[index] = fclamp(1.0f - sourceObstruction[index], 0.0f, 1.0f) * -m_height[index];
 			obs_velPot[index] = fclamp(1.0f - sourceObstruction[index], 0.0f, 1.0f) * -vel_potential[index];
@@ -277,8 +286,8 @@ float eWaveSim::boundaryConditions(float x, float y)
 	leftBound = rightBound = topBound = bottomBound = 1.0;
 
 	//10% of GridSize
-	float hori_Padding = .1f * simGridX;
-	float vert_Padding = .1f * simGridY;
+	float hori_Padding = .2f * simGridX;
+	float vert_Padding = .2f * simGridY;
 
 	if (x0 < 0.0f)
 		leftBound = 0;
