@@ -19,7 +19,6 @@ Description: Based on a paper by Jeschke et al.[2018].
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image.h"
 #include "stb_image_write.h"
-#include "SurfaceWavelet.h"
 
 
 using namespace std;
@@ -52,7 +51,7 @@ float curPos[2] = { 0.f,0.f };
 float prevPos[2] = { 0.f,0.f };
 float *source_height, *source_obstruction;
 
-SurfaceWavelet *sim;
+//eWaveSim *sim;
 
 //INPUTS
 float gravity[2] = { 0,40.0f };
@@ -286,22 +285,17 @@ void displayImage(void)
 			r = g = b = 0;
 			if (display_mode == OBSTRUCTION_DISPLAY)
 			{
-				//float col = 0.5 * ((sim->get_height(i,j) / scaling_factor) + 1.0)*(1.0-glm::clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
-				float col = 0.0f;
+				float col = 0.5 * ((sim->height(i,j) / scaling_factor) + 1.0)*(1.0-glm::clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
 				r = col;
 				g = col;
 				b = col;
-				
 			}
 			else if (display_mode == HEIGHT_DISPLAY)
 			{
-				float hTest = sim->get_height(i, j);
-				//cout << hTest << endl;
-				float col = 0.5 * ((sim->get_height(i, j) / scaling_factor) + 1.0);
+				float col = 0.5 * ((sim->height(i, j) / scaling_factor) + 1.0);
 				r = col;
 				g = col;//sim.densityField[index / 3];
 				b = col;//sim.densityField[index / 3];
-				
 			}
 			else if (display_mode == COM_DISPLAY)//NOT IN USE
 			{
@@ -375,11 +369,11 @@ void paintScreen(int x, int y)
 			for (int iy = ystart; iy <= yend; iy++)
 			{
 				int index = ix + iWidth*(iHeight - iy - 1);
-				/*imageFile[3 * index + 0] = sim->get_height(index);
-				imageFile[3 * index + 1] = sim->get_height(index);
-				imageFile[3 * index + 2] = sim->get_height(index);
+				imageFile[3 * index + 0] = sim->height(index);
+				imageFile[3 * index + 1] = sim->height(index);
+				imageFile[3 * index + 2] = sim->height(index);
 				source_height[index] += source_brush[ix - xstart][iy - ystart];
-				*/
+
 			}
 		}
 	}
@@ -417,14 +411,14 @@ void gIdleState(void)
 
 	if (!pause_sim) {
 		//paintScreen(256, 400);
-		sim->propogate(source_height, timeStep);
+		//sim->propogate(source_height, source_obstruction,timeStep);
 		
 		initMaps(source_height, (iWidth*iHeight), 0);
 	}
 	glutPostRedisplay();
 	if (capture_screen)
 	{
-		std::string advection = "SL";
+		string advection;
 		string dispframe = to_string(frame);
 		if (frame < 1000) { dispframe = "0" + dispframe; }
 		if (frame < 100) { dispframe = "0" + dispframe; }
@@ -518,11 +512,14 @@ void gKeyboardControls(unsigned char key, int x, int y)
 void gMouseDown(int button, int state, int x, int y)
 {
 	if (button != GLUT_LEFT_BUTTON) { return; }
-	if (state != GLUT_DOWN) {  return; }
+	if (state != GLUT_DOWN) { sim->setPrevPoint(curPos);  return; }
 	
 	x_mouse_prev = x;
 	y_mouse_prev = y;
-
+	curPos[0] = x;
+	curPos[1] = y;
+	sim->setCurPoint(curPos);
+	sim->setPrevPoint(curPos);
 	paintScreen(x, y);
 	//std::cout << "ButtonPressed" << std::endl;
 }
@@ -531,6 +528,9 @@ void gMouseMove(int x, int y)
 {
 	x_mouse_prev = x;
 	y_mouse_prev = y;
+	curPos[0] = x;
+	curPos[1] = y;
+	sim->setCurPoint(curPos);
 	paintScreen(x, y);
 	//std::cout << "mouseMoved" << std::endl;
 }
@@ -582,15 +582,14 @@ int main(int argc, char* argv[]) {
 	setNbCores(4);
 	iWidth = 512;
 	iHeight = 512;
-	sim = new SurfaceWavelet();
+	//sim = new eWaveSim();
 
 	//constexpr int blah = sizeof(eWaveSim);
 	//readImage("grumpy.jpg", imageFile);
 	
 	nXGrids = iWidth - 2;
 	nYGrids = iHeight - 2;
-	cout << nXGrids+2 << " " << nYGrids+2 << " " << endl;
-	sim->initFields(nXGrids + 2, nYGrids + 2);
+	//sim->initFields(nXGrids + 2, nYGrids + 2);
 	xLength = (float)iWidth;
 	yLength = (float)iHeight;
 
@@ -614,10 +613,10 @@ int main(int argc, char* argv[]) {
 
 	initializeBrush();
 	paint_mode = PAINT_SOURCE;
-	display_mode = HEIGHT_DISPLAY;
+	display_mode = OBSTRUCTION_DISPLAY;
 	PrintUsage();
 
 	int r = glutFunctions(argc, argv);
-	delete sim;
+	//delete sim;
 	return r;
 }
