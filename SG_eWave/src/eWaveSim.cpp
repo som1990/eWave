@@ -77,19 +77,23 @@ eWaveSim::eWaveSim(int gridX, int gridY)
 eWaveSim::~eWaveSim()
 {
 	delete [] m_height;
-	delete [] res_height;
 	delete [] prev_height;
+	delete [] obs_height;
 	delete [] vel_potential;
 	delete [] prev_velPotential;
-	delete [] cPrev_height;
-	delete [] cPrev_vel;
-	delete [] cH;
-	delete [] cVel;
-	delete [] cHfft;
-	delete [] cVelfft;
+	delete [] obs_velPot;
+	delete [] res_height;
 	delete [] driftVel;
 	delete [] m_ambientWaves;
 	delete [] m_ambWaveSource;
+	
+	free(cH);
+    free(cVel);
+	free(cHfft);
+	free(cVelfft);
+	free(cPrev_height);
+	free(cPrev_vel);
+
 	
 }
 
@@ -115,10 +119,10 @@ void eWaveSim::initFields(int nGridX, int nGridY)
 	int size = simGridX*simGridY;
 
 	m_height = new float[size];
-	prev_height = (float*) malloc(sizeof(float)*size);
+	prev_height = new float[size];
 	obs_height = new float[size];
 	vel_potential = new float[size];
-	prev_velPotential = (float*) malloc(sizeof(float)*size);
+	prev_velPotential = new float[size];
 	obs_velPot = new float[size];
 	res_height = new float[size];
 	driftVel = new float[size*2];
