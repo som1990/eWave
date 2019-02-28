@@ -79,6 +79,7 @@ eWaveSim::~eWaveSim()
 	delete [] m_height;
 	delete [] res_height;
 	delete [] prev_height;
+	delete [] obs_height;
 	delete [] vel_potential;
 	delete [] prev_velPotential;
 	delete [] obs_velPot;
