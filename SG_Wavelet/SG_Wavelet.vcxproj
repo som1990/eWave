@@ -167,6 +167,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SurfaceWavelet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SurfaceWavelet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
