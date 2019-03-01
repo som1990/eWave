@@ -376,11 +376,11 @@ void paintScreen(int x, int y)
 			for (int iy = ystart; iy <= yend; iy++)
 			{
 				int index = ix + iWidth*(iHeight - iy - 1);
-				/*imageFile[3 * index + 0] = sim->get_height(index);
+				imageFile[3 * index + 0] = sim->get_height(index);
 				imageFile[3 * index + 1] = sim->get_height(index);
 				imageFile[3 * index + 2] = sim->get_height(index);
 				source_height[index] += source_brush[ix - xstart][iy - ystart];
-				*/
+				
 			}
 		}
 	}
@@ -538,7 +538,7 @@ void gMouseMove(int x, int y)
 
 void PrintUsage()
 {
-	cout << "FLUID_paint keyboard choices\n";
+	cout << "WAVE PAINT keyboard choices\n";
 	cout << "s			toggle paint mode(Source, Obstruction, Center of Mass)\n";
 	cout << "+/-		increase/decrease brightness of display\n";
 	cout << "r			resets brightness to default\n";

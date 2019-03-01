@@ -18,7 +18,7 @@ public:
 	const float get_height(const int &index) const;
 
 	void addAmplitude(float *&source_height);
-	void genHeightMap(Wavelet &Amplitude, float *&out_height);
+	void genHeightMap(float *&out_height);
 
 	void initFields(int nGridX, int nGridY);
 		
