@@ -10,7 +10,7 @@ Description: Based on a paper by Jeschke et al.[2018].
 #include <omp.h>
 #include <GL\glew.h>
 #include <GL\freeglut.h>
-#include <glm/glm.hpp>
+#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -18,6 +18,8 @@ Description: Based on a paper by Jeschke et al.[2018].
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image.h"
 #include "stb_image_write.h"
+
+
 #include "SurfaceWavelet.h"
 
 
@@ -285,7 +287,7 @@ void displayImage(void)
 			r = g = b = 0;
 			if (display_mode == OBSTRUCTION_DISPLAY)
 			{
-				//float col = 0.5 * ((sim->get_height(i,j) / scaling_factor) + 1.0)*(1.0-glm::clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
+				//float col = 0.5 * ((sim->get_height(i,j) / scaling_factor) + 1.0)*(1.0-std::clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
 				float col = 0.0f;
 				r = col;
 				g = col;
@@ -392,7 +394,7 @@ void paintScreen(int x, int y)
 				imageFile[3 * index + 0] *= obstruction_brush[ix - xstart][iy - ystart];
 				imageFile[3 * index + 1] *= obstruction_brush[ix - xstart][iy - ystart];
 				imageFile[3 * index + 2] *= obstruction_brush[ix - xstart][iy - ystart];
-				source_obstruction[index] *= glm::clamp(obstruction_brush[ix - xstart][iy - ystart], 0.0f, 1.0f);
+				source_obstruction[index] *= clamp(obstruction_brush[ix - xstart][iy - ystart], 0.0f, 1.0f);
 			}
 		}
 	}

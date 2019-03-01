@@ -4,6 +4,8 @@
 #include <algorithm>
 using namespace std;
 
+#define PI 3.14159265359
+
 SurfaceWavelet::SurfaceWavelet() {
 
 }
@@ -31,6 +33,56 @@ const float SurfaceWavelet::get_height(const int &i, const int &j) const
 	return res;
 }
 
+void SurfaceWavelet::addAmplitude(float *&source_height)
+{
+	std::cout << "Adding Amplitude from paint" << std::endl;
+	for (int i = 0; i < simGridX; i++)
+	{
+		#pragma omp parrallel for 
+		for (int j = 0; j < simGridY; j++)
+		{
+			int index = i + j * simGridX;
+			//Adding a equal force around all angles
+			for (int theta = 0; theta < m_Amplitude.dimSize(dimOption::THETA); theta++)
+			{
+				m_Amplitude(i, j, theta, 0) += source_height[index]*m_dt;
+			}
+			
+		}
+	}
+	std::cout << "Finished adding Amplitude" << std::endl;
+}
+
+void SurfaceWavelet::genHeightMap(Wavelet &Amplitude, float *&out_height)
+{
+	for (int i = 0; i < simGridX; i++)
+	{
+		#pragma omp parallel for
+		for (int j = 0; j < simGridY; j++)
+		{
+			int index = i + j * simGridX;
+			float h = 0;
+			Vec2 pos = Vec2{ float(i),float(j) };
+			int numDir = Amplitude.dimSize(dimOption::THETA);
+			int numAngleSamples = 4 * numDir; 
+			float dx = numDir * 2 * PI / numAngleSamples;
+			#pragma omp parallel for
+			for (int c = 0; c < numAngleSamples; c += 1)
+			{
+				float angle = 2.0 * PI * c / (numAngleSamples);
+				Vec2 k_dir = Vec2{cos(angle), sin(angle)};
+				float p = k_dir * pos ;
+
+				for (int k = 0; k < Amplitude.dimSize(dimOption::K); k++)
+				{
+					h += dx * Amplitude( int(pos[dimOption::X]), int(pos[dimOption::Y]), int(c/4.0) , k );
+				}
+			}
+			out_height[index] += h;
+		}
+	}
+}
+
 void SurfaceWavelet::initFields(int nGridX, int nGridY)
 {
 	this->simGridX = nGridX / m_dx;
@@ -45,12 +97,19 @@ void SurfaceWavelet::initFields(int nGridX, int nGridY)
 //	this->res_height = new float[size];
 //	res_height = (float*)malloc(sizeof(float)*size);
 	cout << "Array Size: " << size << endl;
+	m_Amplitude.resize(simGridX, simGridY, 16, 1);
+	cout << "4D Grid Resize Complete!" << endl;
+
 }
 
 void SurfaceWavelet::propogate(float *&source_height, float dt)
 {
 	this->m_dt = dt;
+	addAmplitude(source_height);
 	
+
+	genHeightMap(m_Amplitude, m_height);
+
 	res_height = m_height;
 
 

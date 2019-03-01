@@ -3,6 +3,8 @@
 #define SurfaceWavelet_h__
 
 
+#include "SurfaceWavelet_PCH.h"
+#include "Wavelet.h"
 
 class SurfaceWavelet 
 {
@@ -15,6 +17,9 @@ public:
 	const float get_height(const int &i, const int &j) const;
 	const float get_height(const int &index) const;
 
+	void addAmplitude(float *&source_height);
+	void genHeightMap(Wavelet &Amplitude, float *&out_height);
+
 	void initFields(int nGridX, int nGridY);
 		
 	void propogate(float *&source_height, float dt);
@@ -25,9 +30,9 @@ private:
 	
 	float m_dt;
 	float *m_height;
-	
-	
 	float *res_height;
+
+	Wavelet m_Amplitude;
 };
 
 
