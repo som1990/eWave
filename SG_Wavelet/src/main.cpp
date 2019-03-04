@@ -580,7 +580,9 @@ int glutFunctions(int argc, char *argv[])
 int main(int argc, char* argv[]) {
 	frame = 1;
 	brightnessScale = 1;
-	setNbCores(4);
+	setNbCores(7);
+	omp_set_nested(1);
+	
 	iWidth = 512;
 	iHeight = 512;
 	sim = new SurfaceWavelet();
@@ -591,7 +593,7 @@ int main(int argc, char* argv[]) {
 	nXGrids = iWidth - 2;
 	nYGrids = iHeight - 2;
 	cout << nXGrids+2 << " " << nYGrids+2 << " " << endl;
-	sim->initFields(nXGrids + 2, nYGrids + 2);
+	sim->initFields(nXGrids + 2, nYGrids + 2, 16, 1);
 	xLength = (float)iWidth;
 	yLength = (float)iHeight;
 
