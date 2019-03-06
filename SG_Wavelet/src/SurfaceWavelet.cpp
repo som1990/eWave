@@ -86,6 +86,17 @@ void SurfaceWavelet::genHeightMap(float *&out_height)
 	}
 }
 
+void SurfaceWavelet::precomputeProfileBuffer()
+{
+	for (int izeta = 0; izeta < dimOption::K; izeta++)
+	{
+		m_profileBuffer[izeta] 
+	}
+}
+
+
+
+
 void SurfaceWavelet::initFields(int nGridX, int nGridY, int thetaSamples, int kSamples)
 {
 	this->simGridX = nGridX / m_dx;

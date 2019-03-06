@@ -171,10 +171,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ProfileBuffer.cpp" />
+    <ClCompile Include="src\Spectrum.cpp" />
     <ClCompile Include="src\SurfaceWavelet.cpp" />
     <ClCompile Include="src\Wavelet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ProfileBuffer.h" />
+    <ClInclude Include="src\Spectrum.h" />
     <ClInclude Include="src\SurfaceWavelet.h" />
     <ClInclude Include="src\SurfaceWavelet_PCH.h" />
     <ClInclude Include="src\Wavelet.h" />
