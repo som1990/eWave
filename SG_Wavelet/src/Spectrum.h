@@ -18,11 +18,15 @@ public:
 	//Returns spectrum wave density based on the wavelength (= pow(2,zeta))
 	double operator() (double zeta) const;//Pierson Moskowitz 
 
-	double operator() (double zeta, float theta);
-
+	const float getWindDir() const { 
+		constexpr float tau = 6.28318530718;
+		return (m_windDirection * tau /360.0f) ; 
+	}
+	void setWindDir(const float wDir) { m_windDirection = wDir; }
+	void setWindSpeed(const float wSpeed) { m_windSpeed = wSpeed; }
 public:
 	double m_windSpeed = 1;
-	float m_windDirection = 0;
+	float m_windDirection = 0; //in Degrees
 	int SpectrumType = 0; //0 - Pierson Moskowitz  1 - Phillips Spectrum without windDirectoinCalculation
 	
 };

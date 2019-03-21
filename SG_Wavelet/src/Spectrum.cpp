@@ -27,8 +27,8 @@ double Spectrum::operator()(double zeta) const
 
 	if (SpectrumType == 0)
 	{
-		//double A = pow(1.1, 1.5*zeta); According to the provided program but doesn't match the spectrum function
-		double A = 0.00002613369 * pow(2, 2.5*zeta); // This is my calculation
+		double A = pow(1.1, 1.5*zeta);//pow(2,1.5*zeta)original// According to the provided program but doesn't match the spectrum function
+		//double A = 0.00002613369 * pow(2, 2.5*zeta); // This is my calculation
 		double B = exp(-1.8038897788078411 * pow(4, zeta) / pow(m_windSpeed, 4));//This is right according to my calculation
 		return 0.139098 * sqrt(A * B); //Random Gausian*random number (0,1) * Sqrt(Spectrum)
 

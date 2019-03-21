@@ -523,9 +523,10 @@ void gMouseDown(int button, int state, int x, int y)
 	
 	x_mouse_prev = x;
 	y_mouse_prev = y;
-
+	std::cout << "x,y: " << x << ", " << y << endl;
 	paintScreen(x, y);
 	//std::cout << "ButtonPressed" << std::endl;
+	//sim->addPointAmplitude(x, y, 100);
 }
 
 void gMouseMove(int x, int y)
@@ -533,7 +534,8 @@ void gMouseMove(int x, int y)
 	x_mouse_prev = x;
 	y_mouse_prev = y;
 	paintScreen(x, y);
-	//std::cout << "mouseMoved" << std::endl;
+	//sim->addPointAmplitude(x, y, 1);
+	std::cout << "mouseMoved" << std::endl;
 }
 
 void PrintUsage()
@@ -578,14 +580,23 @@ int glutFunctions(int argc, char *argv[])
 }
 
 int main(int argc, char* argv[]) {
+	SurfaceWavelet::Settings s;
 	frame = 1;
 	brightnessScale = 1;
 	setNbCores(7);
-	omp_set_nested(1);
+//	omp_set_nested(1);
 	
 	iWidth = 512;
 	iHeight = 512;
-	sim = new SurfaceWavelet();
+	s.n_x = iWidth;
+	s.n_y = iHeight;
+	s.n_theta = 16;
+	s.n_zeta = 1;
+	s.wind_direction = 90;
+	s.wind_speed = 100;
+	s.spectrumType = SurfaceWavelet::Settings::PiersonMoskowitz;
+
+	sim = new SurfaceWavelet(s);
 
 	//constexpr int blah = sizeof(eWaveSim);
 	//readImage("grumpy.jpg", imageFile);
@@ -593,7 +604,7 @@ int main(int argc, char* argv[]) {
 	nXGrids = iWidth - 2;
 	nYGrids = iHeight - 2;
 	cout << nXGrids+2 << " " << nYGrids+2 << " " << endl;
-	sim->initFields(nXGrids + 2, nYGrids + 2, 16, 1);
+
 	xLength = (float)iWidth;
 	yLength = (float)iHeight;
 
@@ -603,7 +614,6 @@ int main(int argc, char* argv[]) {
 
 
 	int size = iWidth*iHeight;
-	int grids = (nXGrids + 2)*(nYGrids + 2);
 
 	pixmap = new float[size * 3];
 	cout << "Initializing pixmap" << endl;

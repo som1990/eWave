@@ -14,8 +14,9 @@ public:
 
 	template <typename Spectrum>
 	void precompute(Spectrum &spectrum, float time, float zeta_min, float zeta_max,
-		int resolution = 2048, int periodicity = 2, int integration_nodes = 100)
+		int resolution = 4098, int periodicity = 2, int integration_nodes = 100)
 	{
+		m_data.resize(resolution);
 		m_period = periodicity * pow(2, zeta_max);
 
 #pragma omp parallel for
