@@ -2,6 +2,16 @@
 
 <b> Purpose </b>: To compare a slightly older but modified algorithm with latest Siggraph paper(2018) solution to wave interaction. The goal is to do an analytical analysis of these two methods to come up with a faster and more accurate wave simulation as compared to what's currently been using in game production.  
 
+## Requirements 
+
+ <br> You would need
+ - [STB image library] (https://github.com/nothings/stb)
+ - glm clamp function (TO DO: Need to write a custom clamp),
+ - c++14 and above compiler . 
+ - [glut] (https://www.opengl.org/resources/libraries/glut/)
+ - [fftw] (http://www.fftw.org/)
+ - openMP 3.0
+ 
 ## 1) eWave Algorithm
 
 <br> <b>Motivation</b>: To implement and develop a faster and more accurate method for player water wave interaction which can be utilized in production in game companies.
