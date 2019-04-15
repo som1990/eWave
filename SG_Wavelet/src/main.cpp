@@ -430,7 +430,7 @@ void gIdleState(void)
 		if (frame < 1000) { dispframe = "0" + dispframe; }
 		if (frame < 100) { dispframe = "0" + dispframe; }
 		if (frame < 10) { dispframe = "0" + dispframe; }
-		string fName = "SG_Method_" + advection + "_" + dispframe + ".jpg";
+		string fName = "SG_SurfaceWavelet_" + dispframe + ".jpg";
 
 		writeImage(fName.c_str(), pixmap);
 		cout << "Writing Frame: " << dispframe << endl;

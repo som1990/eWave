@@ -287,7 +287,7 @@ void displayImage(void)
 			if (display_mode == OBSTRUCTION_DISPLAY)
 			{
 				
-				float col = 0.5 * ((sim->height(i,j) / scaling_factor) + 1.0)*(1.0- clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
+				float col = 0.5 * ((sim->height(i,j) / scaling_factor) + 1.0)*(1.0- glm::clamp(source_height[index/3],0.0f,1.0f))*source_obstruction[index/3];
 				r = col;
 				g = col;
 				b = col;
@@ -389,7 +389,7 @@ void paintScreen(int x, int y)
 				imageFile[3 * index + 0] *= obstruction_brush[ix - xstart][iy - ystart];
 				imageFile[3 * index + 1] *= obstruction_brush[ix - xstart][iy - ystart];
 				imageFile[3 * index + 2] *= obstruction_brush[ix - xstart][iy - ystart];
-				source_obstruction[index] *= std::clamp(obstruction_brush[ix - xstart][iy - ystart], 0.0f, 1.0f);
+				source_obstruction[index] *= glm::clamp(obstruction_brush[ix - xstart][iy - ystart], 0.0f, 1.0f);
 			}
 		}
 	}

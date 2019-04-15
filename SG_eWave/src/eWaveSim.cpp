@@ -179,7 +179,7 @@ void eWaveSim::initDriftVel(float *&dVel)
 #pragma omp parallel for
 	for (int i = 0; i < size; i = i + 2)
 	{
-		dVel[i + 0] = -1.0f * driftVelScale;
+		dVel[i + 0] = 0; //-1.0f * driftVelScale;
 		dVel[i + 1] = 0;
 	}
 }
@@ -203,7 +203,7 @@ void eWaveSim::addingSources(float *&source_height)
 	for (int i = 0; i < size; i++)
 	{
 		//I was getting a subtle effect and hence multiplied it with a constant
-		float temp = source_height[i]*m_dt*2;
+		float temp = source_height[i]*m_dt*5;
 		float temp2 = m_height[i] + obs_height[i];
 		m_height[i] = temp2 + temp + m_ambientWaves[i] + m_ambWaveSource[i];
 		vel_potential[i] += obs_velPot[i];
