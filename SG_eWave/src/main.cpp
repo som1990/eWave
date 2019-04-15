@@ -13,7 +13,7 @@ Description: Original paper by Dr.Jerry Tessendorf. This is my implementation of
 #include <glm/glm.hpp>
 #include <iostream>
 #include <string>
-
+#include <ctime>
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image.h"
@@ -405,6 +405,7 @@ void gRender(void)
 
 void gIdleState(void)
 {
+	clock_t current_ticks = clock();
 	displayImage();
 
 	if (!pause_sim) {
@@ -414,6 +415,7 @@ void gIdleState(void)
 		initMaps(source_height, (iWidth*iHeight), 0);
 	}
 	glutPostRedisplay();
+	clock_t delta_ticks = clock() - current_ticks;
 	if (capture_screen)
 	{
 		string advection;
@@ -421,14 +423,20 @@ void gIdleState(void)
 		if (frame < 1000) { dispframe = "0" + dispframe; }
 		if (frame < 100) { dispframe = "0" + dispframe; }
 		if (frame < 10) { dispframe = "0" + dispframe; }
-		string fName = "Renders/SG_Method_" + advection + "_" + dispframe + ".jpg";
+		string fName = "Renders/SG_eWave_" + advection + "_" + dispframe + ".jpg";
 
 		writeImage(fName.c_str(), pixmap);
 		cout << "Writing Frame: " << dispframe << endl;
 	}
 	
 	frame++;
-
+	if (frame % 24 == 0)
+	{
+		float FPS = 0;
+		if (delta_ticks > 0)
+			FPS = CLOCKS_PER_SEC / delta_ticks;
+		cout << "fps: " << FPS << endl;
+	}
 }
 
 

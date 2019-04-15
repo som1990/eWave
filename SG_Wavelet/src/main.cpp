@@ -13,6 +13,8 @@ Description: Based on a paper by Jeschke et al.[2018].
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <ctime>
+
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -414,6 +416,7 @@ void gRender(void)
 
 void gIdleState(void)
 {
+	clock_t current_ticks = clock();
 	displayImage();
 
 	if (!pause_sim) {
@@ -423,6 +426,7 @@ void gIdleState(void)
 		initMaps(source_height, (iWidth*iHeight), 0);
 	}
 	glutPostRedisplay();
+	clock_t delta_ticks = clock() - current_ticks;
 	if (capture_screen)
 	{
 		std::string advection = "SL";
@@ -437,7 +441,13 @@ void gIdleState(void)
 	}
 
 	frame++;
-
+	if (frame % 24 == 0)
+	{
+		float FPS = 0;
+		if (delta_ticks > 0)
+			FPS = CLOCKS_PER_SEC / (1.0 *delta_ticks);
+		cout << "fps: " << FPS << endl;
+	}
 }
 
 

@@ -192,9 +192,9 @@ void SurfaceWavelet::addAmplitude(float *&source_height)
 					float angle = (2.0*PI*theta) / m_Amplitude.dimSize(dimOption::THETA);
 					float dotprod = cos(angle) * -ngradX + sin(angle) * -ngradY;
 					//float dotprod = 1.0f;
-					clamp(dotprod, 0.0f, 1.0f);
+					//clamp(dotprod, 0.0f, 1.0f);
 					//cout << (ParallelStream() << "dotProd: " << dotprod).toString() << endl;
-					m_Amplitude(i, j, theta, 0) += source_height[index] * dotprod;
+					m_Amplitude(i, j, theta, 0) += source_height[index] * 1000; //* dotprod * 1000;
 				}
 				
 			}
