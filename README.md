@@ -40,4 +40,22 @@
  - Since FFT can be done parallely in the GPU, I wanted to use this method to generate the waves. At the moment with CPU tests, the results look promising. In the CPU with 8 CPU threads this algorithm without any enhancements runs smoothly > 60 fps. The surface wavelet at this point run with the same setup at about 1 fps. This is expected as the true speedup claimed by the paper comes from running it in the GPU. Hence preliminary test produce promising results.
  
  
+ #### EWave Base below
  
+ <br><img src = "SG_eWave_Base.gif">
+ 
+ #### WaveLet below
+ 
+ <br><img src = "SG_Wavelet.gif">
+ 
+ ### Enhanced Version
+ <br> In the Enhanced version we add
+  - Ambient waves. 
+  - The faster the object moves , the more waves it generates. Stationary/stable objects do not produce new waves rather just reflect existing waves.
+  - Wave propogation via Semi Lagrangian Method. There is a velocity flow field that pushes our wave. This simulates rivers and custom flow fields.
+  
+  #### We can see the advanced eWave below
+  
+  <br> <img src = "SG_eWaveEnhanced.gif">
+  
+  ### WIP more to come . Next GPU implementation 
