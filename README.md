@@ -47,7 +47,7 @@
  
 <br> <b> Proposed Solution </b>:
  - In the eWave paper Dr. Tessendorf proposes a resolution independant and non-kernal method. He transforms the generated equation to the Frequency realm by Fast fourier Tranforming(FFT) the Height Equation. 
- - Since FFT can be done parallely in the GPU, I wanted to use this method to generate the waves. At the moment with CPU tests, the results look promising. In the CPU with 8 CPU threads this algorithm without any enhancements runs smoothly > 15 fps. The surface wavelet at this point run with the same setup at  < 1 fps. This is expected as the true speedup claimed by the paper comes from running it in the GPU. Hence preliminary test produce promising results.
+ - Since FFT can be done parallely in the GPU, I wanted to use this method to generate the waves. At the moment with CPU tests, the results look promising. In the CPU with 4 CPU threads this algorithm without any enhancements runs smoothly > 15 fps. The surface wavelet at this point run with the same setup at  < 1 fps. This is expected as the true speedup claimed by the paper comes from running it in the GPU. Hence preliminary test produce promising results.
  
  
  #### EWave Base below
