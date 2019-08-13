@@ -35,7 +35,7 @@
 <br> I will be using as much code provided by the Surface Wavelet algorithm to compare with my enhanced eWave algorithm to stay true to the original author's vision. I will not be comparing channel flow or other methods utilized by the Surface wavelets.
 
 <br> <b> MileStone </b>:
-  - End Date: May 10th, 2019.
+  - End Date: October 15th, 2019.
  
 <br><b>Existing Solutions </b>:
  There are several solutions to the problem of having more accurate wave interaction which leads but each have their drawbacks.
