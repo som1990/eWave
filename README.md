@@ -68,4 +68,4 @@
   
   <br> <img src = "SG_eWaveEnhanced.gif">
   
-  ### WIP more to come . Next GPU implementation 
+  ### WIP more to come . Next Implementation in UnrealEngine 4
