@@ -286,8 +286,8 @@ float eWaveSim::boundaryConditions(float x, float y)
 	leftBound = rightBound = topBound = bottomBound = 1.0;
 
 	//10% of GridSize
-	float hori_Padding = .2f * simGridX;
-	float vert_Padding = .2f * simGridY;
+	float hori_Padding = .1f * simGridX;
+	float vert_Padding = .1f * simGridY;
 
 	if (x0 < 0.0f)
 		leftBound = 0;

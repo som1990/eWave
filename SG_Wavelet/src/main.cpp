@@ -603,7 +603,7 @@ int main(int argc, char* argv[]) {
 	s.n_theta = 16;
 	s.n_zeta = 1;
 	s.wind_direction = 90;
-	s.wind_speed = 100;
+	s.wind_speed = 5;
 	s.spectrumType = SurfaceWavelet::Settings::PiersonMoskowitz;
 
 	sim = new SurfaceWavelet(s);
