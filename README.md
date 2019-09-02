@@ -2,6 +2,16 @@
 
 <b> Purpose </b>: To compare a slightly older but modified algorithm with latest Siggraph paper(2018) solution to wave interaction. The goal is to do an analytical analysis of these two methods to come up with a faster and more accurate wave simulation as compared to what's currently been using in game production.  
 
+## Requirements 
+
+ <br> You would need
+ - [STB image library] (https://github.com/nothings/stb)
+ - glm clamp function (TO DO: Need to write a custom clamp),
+ - c++14 and above compiler . 
+ - [glut] (https://www.opengl.org/resources/libraries/glut/)
+ - [fftw] (http://www.fftw.org/)
+ - openMP 3.0
+ 
 ## 1) eWave Algorithm
 
 <br> <b>Motivation</b>: To implement and develop a faster and more accurate method for player water wave interaction which can be utilized in production in game companies.
@@ -25,7 +35,7 @@
 <br> I will be using as much code provided by the Surface Wavelet algorithm to compare with my enhanced eWave algorithm to stay true to the original author's vision. I will not be comparing channel flow or other methods utilized by the Surface wavelets.
 
 <br> <b> MileStone </b>:
-  - End Date: May 10th, 2019.
+  - End Date: October 15th, 2019.
  
 <br><b>Existing Solutions </b>:
  There are several solutions to the problem of having more accurate wave interaction which leads but each have their drawbacks.
@@ -37,7 +47,25 @@
  
 <br> <b> Proposed Solution </b>:
  - In the eWave paper Dr. Tessendorf proposes a resolution independant and non-kernal method. He transforms the generated equation to the Frequency realm by Fast fourier Tranforming(FFT) the Height Equation. 
- - Since FFT can be done parallely in the GPU, I wanted to use this method to generate the waves. At the moment with CPU tests, the results look promising. In the CPU with 8 CPU threads this algorithm without any enhancements runs smoothly > 60 fps. The surface wavelet at this point run with the same setup at about 1 fps. This is expected as the true speedup claimed by the paper comes from running it in the GPU. Hence preliminary test produce promising results.
+ - Since FFT can be done parallely in the GPU, I wanted to use this method to generate the waves. At the moment with CPU tests, the results look promising. In the CPU with 4 CPU threads this algorithm without any enhancements runs smoothly > 15 fps. The surface wavelet at this point run with the same setup at  < 1 fps. This is expected as the true speedup claimed by the paper comes from running it in the GPU. Hence preliminary test produce promising results.
  
  
+ #### EWave Base below
  
+ <br><img src = "SG_eWave_Base.gif">
+ 
+ #### WaveLet below
+ 
+ <br><img src = "SG_Wavelet.gif">
+ 
+ ### Enhanced Version
+ <br> In the Enhanced version we add
+  - Ambient waves. 
+  - The faster the object moves , the more waves it generates. Stationary/stable objects do not produce new waves rather just reflect existing waves.
+  - Wave propogation via Semi Lagrangian Method. There is a velocity flow field that pushes our wave. This simulates rivers and custom flow fields.
+  
+  #### We can see the advanced eWave below
+  
+  <br> <img src = "SG_eWaveEnhanced.gif">
+  
+  ### WIP more to come . Next Implementation in UnrealEngine 4
