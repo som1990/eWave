@@ -74,5 +74,6 @@
   
   
   <br><img src= "EWaveExample2.gif">
+  Note: This gif doesn't accurately represent the framerate or speed.
   
   Breakdown to come in a bit. 
