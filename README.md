@@ -28,7 +28,7 @@
  - Create a CPU prototype of the [eWave algorithm] (https://people.cs.clemson.edu/~jtessen/reports/papers_files/ewavealgorithm.pdf) (Completed)
  - Enhance the algorithm by adding advection of the wave, wave generation on moving objects and bouyancy generation. (Completed)
  - Create a CPU prototype of the [Surface Wavelet algorithm] ( https://dl.acm.org/citation.cfm?id=3201336) (Completed)
- - Generate a GPU prototype of the enhanced eWave algorithm in the Unreal Engine 4 (In progress)
+ - Generate a GPU prototype of the enhanced eWave algorithm in the Unreal Engine 4 (Completed)
  - Generate a GPU prototype of the Surface Wavelet algorithm in the Unreal Engine 4 
  - Compare the fps and simulation times.
 
@@ -68,4 +68,10 @@
   
   <br> <img src = "SG_eWaveEnhanced.gif">
   
-  ### WIP more to come . Next Implementation in UnrealEngine 4
+  ### Unreal Engine 4 implementation.
+  
+  This GPU based solution is lightening fast. The Compute Shader simulation taking 0.6-0.8 ms and Displaying using Pixel Shader takes about 0.15 ms. So if we consider in fps , we get around 1000 fps with the simulation. This is done on a 512x512 patch, using SDF (signed distance fields) to generate the intersections, captured by a scene render target.
+  
+  
+  
+  Breakdown to come in a bit. 
