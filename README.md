@@ -1,4 +1,4 @@
-# CPU prototype of eWave and Surface Wavelet algorithm (In Progress)
+# CPU prototype of eWave and Surface Wavelet algorithm. UE4 GPU Implementation description found below
 
 <b> Purpose </b>: To compare a slightly older but modified algorithm with latest Siggraph paper(2018) solution to wave interaction. The goal is to do an analytical analysis of these two methods to come up with a faster and more accurate wave simulation as compared to what's currently been using in game production.  
 
@@ -76,6 +76,14 @@
   <br><img src= "EWaveExample2.gif">
   Note: This gif doesn't accurately represent the framerate or speed.
   
-  Video of it working with self-advection found [here.](https://vimeo.com/373876343).
+  
+  ###Updated Video Link of Test below (11/18/2019)
+  Video of it working with self-advection found [here](https://vimeo.com/373876343).
+  
+  You will see more detail and a slight fix to the symmetry of the resultant wave. You will also see choppyness and the waves pushing itself via self-advection.
+  
+  I realized Semi Lagrangian (SL) advection was losing detail in the waves. So I implemented a Modified Macormack advection scheme which preserves lot of the detail that was lost with the SL. 
+  
+  You may also realize the waves being choppier and having a direction as compared to the GIF. This is achieved via a horizontal displacement of the heightfield (We differentiate the heightfield).  
   
   Breakdown to come in a bit. 
