@@ -76,4 +76,6 @@
   <br><img src= "EWaveExample2.gif">
   Note: This gif doesn't accurately represent the framerate or speed.
   
+  Video of it working with self-advection found [here.](https://vimeo.com/373876343).
+  
   Breakdown to come in a bit. 
