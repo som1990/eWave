@@ -77,7 +77,7 @@
   Note: This gif doesn't accurately represent the framerate or speed.
   
   
-  ###Updated Video Link of Test below (11/18/2019)
+  ### Updated Video Link of Test below (11/18/2019)
   Video of it working with self-advection found [here](https://vimeo.com/373876343).
   
   You will see more detail and a slight fix to the symmetry of the resultant wave. You will also see choppyness and the waves pushing itself via self-advection.
