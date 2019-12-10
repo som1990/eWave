@@ -2,6 +2,10 @@
 
 <b> Purpose </b>: To compare a slightly older but modified algorithm with latest Siggraph paper(2018) solution to wave interaction. The goal is to do an analytical analysis of these two methods to come up with a faster and more accurate wave simulation as compared to what's currently been using in game production.  
 
+## Latest Video (Dec 2019)
+
+Latest Teaser found [here](https://vimeo.com/378496982).
+
 ## Requirements 
 
  <br> You would need
